@@ -1,7 +1,7 @@
 {
     'name': 'Dynamic ListView',
     'summary': 'Dynamic ListView',
-    'version': '1.0',
+    'version': '12.0.0.0',
     'category': 'Web',
     'description': """
         Dynamic ListView. Change The Odoo List view On the fly without any technical knowledge
