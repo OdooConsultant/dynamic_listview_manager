@@ -1,24 +1,21 @@
 {
-    'name': 'Dynamic ListView Advance',
-    'summary': 'Dynamic ListView Advance',
-    'version': '8.0.0.0',
+    'name': 'Dynamic Odoo Advance v9',
+    'summary': 'Change The Odoo ListView/FormView On the fly without any technical knowledge',
+    'version': '9.0.0.0',
     'category': 'Web',
     'description': """
-        Dynamic ListView Advance. Change The Odoo List view On the fly without any technical knowledge
+            Change The Odoo ListView/FormView On the fly without any technical knowledge
     """,
-    'author': "Yee Software",
+    'author': "Apps for Odoo",
+    'images': ['images/1.png'],
     'depends': ['web'],
-    'data': ['views/templates.xml',
+    'data': ['templates.xml',
              'security/show_fields_security.xml',
              'security/ir.model.access.csv'],
-    'price': 110,
-    'license': 'OPL-1',
+    'price': 450,
     'currency': 'EUR',
     'installable': True,
     'auto_install': False,
     'application': False,
-    'qweb': ['static/src/xml/base.xml'],
-    'images': [
-        'static/description/module_image.png',
-    ],
+    'qweb': ['static/src/xml/listview_button_view.xml'],
 }
