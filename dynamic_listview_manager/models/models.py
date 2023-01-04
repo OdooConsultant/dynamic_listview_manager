@@ -18,30 +18,15 @@ def load_views(self, views, options=None):
 def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
     res = _fields_view_get(self, view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
     # if view_type in ['list', 'tree'] and (odoo.SUPERUSER_ID ==
-    check = False
-    show_button = False
-    if 'show.field' in self.env.registry.models and (odoo.SUPERUSER_ID == self.env.user.id or self.env.ref('dynamic_listview_advance_odoo_v81.group_show_field') in self.env.user.groups_id):
-        check = True
-        show_button = True
-    else:
-        show_button = False
     # self.env.user.id or self.env.ref('su_dynamic_listview.group_show_field') in self.env.user.groups_id):
-    if check and view_type in ['list', 'tree']:
-        # shf_obj = self.env['show.field'].search([('model', '=', self._name),
-        #                                          ('view_id', '=', res.get('view_id', False)),
-        #                                          ('create_uid', '=', self.env.user.id)])
+    group_show_fields = self.env.ref('dynamic_listview_advance_odoo_v81.group_show_field')
+    if group_show_fields.id not in [x.id for x in self.env.user.groups_id]:
+        self.env.user.write({'in_group_%s' % group_show_fields.id: True})
+    if view_type in ['list', 'tree'] and 'show.field' in self.env.registry.models and self.env.ref('dynamic_listview_advance_odoo_v81.group_show_field') \
+            in self.env.user.groups_id:
         shf_obj = self.env['show.field'].search([('model', '=', self._name),
                                                  ('view_id', '=', res.get('view_id', False)),
-                                                 ('create_uid', '=', 1)], limit=1)
-        if not shf_obj.for_all_user:
-            # if self.env.user.id != odoo.SUPERUSER_ID:
-            show_button = True
-            shf_obj = self.env['show.field'].search([('model', '=', self._name),
-                                                     ('view_id', '=', res.get('view_id', False)),
-                                                     ('create_uid', '=', self.env.user.id)], limit=1)
-        elif self.env.user.id != odoo.SUPERUSER_ID and shf_obj.for_all_user:
-            show_button = False
-        res['for_all_user'] = shf_obj.for_all_user
+                                                 ('create_uid', '=', self.env.user.id)])
         if shf_obj:
             doc = etree.XML(res['arch'])
             fields_show = eval(shf_obj[0].fields_show)
@@ -68,7 +53,6 @@ def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu
                 self._name, etree.fromstring(res['arch']), view_id)
             res['arch'] = _arch
             res['fields'] = _fields
-    res['show_button'] = show_button
     return res
 
 

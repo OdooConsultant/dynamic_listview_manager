@@ -2,8 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-extend="ListView.buttons">
         <t t-jquery=".o_list_button_save" t-operation="after">
-            <t t-if="widget.viewInfo.show_button">
-            <div class="btn-group o_dropdown su_fields_show" groups="dynamic_listview_advance_odoo_v81.group_show_field">
+            <div class="btn-group o_dropdown su_fields_show" groups="group_show_field">
                 <button class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle su_btn-show-fields"
                         data-toggle="dropdown" aria-expanded="true">
                     <span class="fa fa-foursquare"></span> Fields <span class="caret"></span>
@@ -11,39 +10,49 @@
                 <t t-set="_record" t-value="[]"/>
                 <div class="dropdown-menu">
                     <div class="su_action">
-                        <t t-if="widget.initialState.context.uid == 1">
-                            <div style="display: inline-block">
-                                <t t-if="widget.viewInfo.for_all_user">
-                                    <input id="apply_for_all_user" name="apply_for_all_user" checked="checked" type="checkbox" />
-                                </t>
-                                <t t-if="!widget.viewInfo.for_all_user">
-                                    <input id="apply_for_all_user" name="apply_for_all_user" type="checkbox" />
-                                </t>
-                                <label for="apply_for_all_user">Apply for all Users</label>
-                            </div>
-                            </t>
+                        <a title="Reset" action="update" style="float: left" class="btn btn-secondary reset_fields_show">
+                            <span style="font-size: 20px" class="fa fa-undo"></span>
+                        </a>
                         <a title="Update" action="update" class="btn btn-secondary update_fields_show">
-                            <span class="fa fa-refresh"></span>
+                            <span style="font-size: 20px" class="fa fa-refresh"></span>
                         </a>
                     </div>
                     <div class="su_dropdown">
                         <ul class="o_filters_menu" id="ul_fields_show" role="menu">
                             <t t-foreach="widget.renderer.columns" t-as="field">
                                 <li class="selected" t-att-name="field.attrs.name">
-                                    <span class="span_ticked">&#xf00c;</span>
-                                    <a><t t-esc="widget._get_node_string(field)" /></a>
-                                    <input type="text" t-att-value="widget._get_node_string(field)" />
-                                    <t t-set="record" t-value="_record.push(field.attrs.name)" />
+                                    <div style="display: flex">
+                                        <div style="margin: auto 0;">
+                                            <span class="fa fa-arrows span_ticked"></span>
+                                        </div>
+                                        <div class="lilo" style="display: inline-block; flex: 1;margin: auto 0">
+                                            <a><t t-esc="widget._get_node_string(field)" /></a>
+                                            <input type="text" class="input_l" t-att-value="widget._get_node_string(field)" />
+                                            <t t-set="record" t-value="_record.push(field.attrs.name)" />
+                                        </div>
+                                        <div class="cb_ok" style="padding-left: 5px;margin: auto 0">
+                                          <input type="checkbox" checked="checked" t-att-id="field.attrs.name" value="Rainbow Dash" /><label t-att-for="field.attrs.name"></label>
+                                        </div>
+                                    </div>
                                 </li>
                             </t>
                             <t t-foreach="widget.renderer.state.fields" t-as="field">
                                 <t t-if="_record.indexOf(field) == -1">
                                     <li t-att-name="field">
-                                        <span>&#xf00c;</span>
-                                        <a>
-                                            <t t-esc="widget.renderer.state.fields[field].string" />
-                                        </a>
-                                        <input type="text" t-att-value="widget.renderer.state.fields[field].string" />
+                                        <div style="display: flex">
+                                            <div style="margin: auto 0;">
+                                                <span class="fa fa-arrows span_ticked"></span>
+                                            </div>
+                                            <div class="lilo" style="display: inline-block; flex: 1;margin: auto 0">
+                                                <a>
+                                                    <t t-esc="widget.renderer.state.fields[field].string" />
+                                                </a>
+                                                <input type="text" class="input_l" t-att-value="widget.renderer.state.fields[field].string" />
+                                            </div>
+                                            <div class="cb_ok" style="padding-left: 5px;margin: auto 0">
+                                              <input type="checkbox" t-att-id="field" value="Rainbow Dash" /><label t-att-for="field"></label>
+                                            </div>
+                                        </div>
                                     </li>
                                 </t>
                             </t>
@@ -51,7 +60,6 @@
                     </div>
                 </div>
             </div>
-            </t>
         </t>
     </t>
 </templates>

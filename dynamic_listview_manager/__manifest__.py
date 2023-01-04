@@ -1,10 +1,10 @@
 {
-    'name': 'Dynamic ListView Advance',
-    'summary': 'Dynamic ListView Advance',
-    'version': '11.0.0.0',
+    'name': 'Dynamic ListView',
+    'summary': 'Dynamic ListView',
+    'version': '1.0',
     'category': 'Web',
     'description': """
-        Dynamic ListView Advance. Change The Odoo List view On the fly without any technical knowledge.
+        Dynamic ListView. Change The Odoo List view On the fly without any technical knowledge
     """,
     'author': "Yee Software",
     'depends': ['web'],
