@@ -1,10 +1,10 @@
 {
     'name': 'Dynamic ListView Advance',
-    'summary': 'SU Dynamic ListView Advance',
-    'version': '10.0.0.0',
+    'summary': 'Dynamic ListView Advance',
+    'version': '11.0.0.0',
     'category': 'Web',
     'description': """
-        Dynamic ListView Advance
+        Dynamic ListView Advance. Change The Odoo List view On the fly without any technical knowledge.
     """,
     'author': "Yee Software",
     'depends': ['web'],
@@ -16,9 +16,9 @@
     'qweb': [
         'static/src/xml/base.xml',
     ],
-    'license': 'OPL-1',
     'images': ['images/main_screen.jpg'],
     'price': 110,
+    'license': 'OPL-1',
     'currency': 'EUR',
     'installable': True,
     'auto_install': False,

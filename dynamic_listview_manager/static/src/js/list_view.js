@@ -1,12 +1,38 @@
 odoo.define('dynamic_listview_advance_odoo_v81.dynamic_listview', function(require) {
-    var Model = require('web.Model');
-    var session = require('web.session');
+    var core = require('web.core');
     var ListView = require('web.ListView');
+    var ListRenderer = require('web.ListRenderer');
+    var ListController = require('web.ListController');
 
     ListView.include({
-        render_buttons: function($node) {
+        init: function (viewInfo, params) {
+            this._super(viewInfo, params);
+            this.rendererParams.viewInfo = viewInfo;
+        }
+    });
+
+    ListRenderer.include({
+        init: function (parent, state, params) {
+            this._super(parent, state, params);
+            this.viewInfo = params.viewInfo;
+        },
+    });
+
+    ListController.include({
+        init: function (parent, model, renderer, params) {
+            this._super(parent, model, renderer, params);
+            this.viewInfo = renderer.viewInfo;
+        },
+        _get_node_string: function(field) {
+            var _field = this.viewInfo.fields[field.attrs.name];
+            var result = _field.string;
+            if (field.hasOwnProperty("attrs") && field.attrs.hasOwnProperty("string")) {
+                result = field.attrs.string;
+            }
+            return result;
+        },
+        renderButtons: function($node) {
             this._super($node);
-            this.uid = session.uid;
             if (this.$buttons) {
                 this.$buttons.on('click', '.su_fields_show li', this.proxy('onClickShowField'));
                 this.$buttons.on('click', '.update_fields_show', this.proxy('updateShowField'));
@@ -18,18 +44,9 @@ odoo.define('dynamic_listview_advance_odoo_v81.dynamic_listview', function(requi
                 this.$buttons.find('#ul_fields_show').disableSelection();
             }
         },
-        _get_node_string: function(field_name) {
-            var field = this.viewInfo.fields[field_name];
-            var _field = this.viewInfo.fieldsInfo.list[field_name];
-            var result = field.string;
-            if (_field.hasOwnProperty("string")) {
-                result = _field.string;
-            }
-            return result;
-        },
         onClickApplyAll: function(e){
-            e.stopPropagation();
-        },
+           e.stopPropagation();
+       },
         onClickSpanCheck: function (e) {
             var self = $(e.currentTarget);
             if (e.currentTarget.className.search('span_ticked') >= 0){
@@ -60,9 +77,13 @@ odoo.define('dynamic_listview_advance_odoo_v81.dynamic_listview', function(requi
         },
         updateShowField: function () {
             // var self = this;
-            var values = {model: this.model, view_id: this.fields_view.view_id, fields_show: this.getFieldsShow(),
+            var values = {model: this.modelName, view_id: this.viewInfo.view_id, fields_show: this.getFieldsShow(),
                 for_all_user: this.$buttons.find("#apply_for_all_user:checked").length ? true : false};
-            new Model("show.field").call('change_fields',  [values]).done(function (result) {
+            this._rpc({
+                model: 'show.field',
+                method: 'change_fields',
+                kwargs: {values: values},
+            }).then(function (result) {
                 location.reload();
             });
         },

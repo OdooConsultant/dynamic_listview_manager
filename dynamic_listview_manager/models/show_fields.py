@@ -12,6 +12,7 @@ class SUShowFields(models.Model):
 
     @api.model
     def change_fields(self, values):
+        print(values)
         records = self.search([("model", "=", values.get("model", False)),
                                ("create_uid", "=", self.env.user.id),
                                ("view_id", '=', values.get("view_id", False))])
